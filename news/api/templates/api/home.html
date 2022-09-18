@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+    }
+</style>
+
+<div class="home-container">
+    <div>
+        <h3>Search</h3>
+        <form method="GET" action="{% url 'homepage' %}">
+            <input type="text" name="q" placeholder="Search text"/>
+            
+        </form>
+        <hr>
+        <h4>Categories</h4>
+        <div>
+            <ul>
+                <li><a href="{% url 'homepage' %}">All</a></li>
+                <li><a href="{% url 'homepage' %}?q=story">Story</a></li>
+                <li><a href="{% url 'homepage' %}?q=job">Jobs</a></li>
+                <li><a href="{% url 'homepage' %}?q=poll">Poll</a></li>
+                <li><a href="{% url 'homepage' %}?q=pollopt">PollOpt</a></li>
+            </ul>
+            <a href="{% url 'create_news' %}">Add news Item</a>
+        </div>
+    </div>
+    <div>
+        <div>
+            <h1>HOMEPAGE</h1>
+        {% for i in page.object_list %}
+                <div class="card-body">
+                    <h4 class="card-title">{{ i.title }}</h4>
+                    <h5 class="card-subtitle mb-2 text-muted">{{ i.by }}</h5>
+                    <p class="card-type">{{ i.category }}.</p>
+                    <a href="{% url 'details' i.hackernewsid %}" class="card-link">More Details</a>
+
+                    {% if request.user == i.host%}
+                    <a href="{% url 'update_news' i.hackernewsid %}">Edit news</a>
+                    <a href="{% url 'delete_news' i.hackernewsid %}"><small>Delete</small></a>
+                    {% endif %}
+                </div>
+                <hr>
+        
+        {% endfor %}
+    </div>
+
+    <div class="page-links">
+        {% if page.has_previous %}
+        <a href="{% url 'homepage' %}?page={{ page.previous_page_number}}">Previous page</a>
+        {% endif %}
+        {% if page.has_next %}
+        <a href="{% url 'homepage' %}?page={{ page.next_page_number}}">Next page</a>
+        {% endif %}
+        
+    </div>
+
+</div>
+{% endblock %}

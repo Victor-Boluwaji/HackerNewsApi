@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{%block content%}
+    <h1> {{ data.title }} </h1>
+    {% if data.urls is not None %}
+    <a href="{{ data.urls }}"><h6>Read More here</h6></a>
+    {% endif %}
+    {% for i in comments %}
+    <div>
+        
+        <p>posted by: {{i.by}} </p>
+         comments: {{i.text}}
+        <hr>
+    </div>
+    {% endfor %}
+    
+{% endblock %}
